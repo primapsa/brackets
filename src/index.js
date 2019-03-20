@@ -1,61 +1,58 @@
 module.exports = function check(str, bracketsConfig) {
- // var bracketsConfig=[['(', ')']];
-  //var str='((()))()))';
-  
-  var res=false;
-  var blacklist=[];
-  var blacklist2=[];
-  var blacklist3=[];
-    if(str.length>0){
-     forwar: for(let i=0; i<str.length; i++){
-       let checker=blacklist.indexOf(i);
-       if(checker==-1){
-        let first=str[i];
-         //console.log('Element: '+first+' num:'+i);
-        for(let t=0; t<bracketsConfig.length; t++){
-          let start=bracketsConfig[t][0];
-          let end=bracketsConfig[t][1];
-          for(let tn=0; tn<bracketsConfig[t].length; tn++){
-            if(first===start){
-              //console.log('Find: '+start+' num:'+i);
-              let second=str[i+1];
-              //console.log('Search: '+end+' num: '+i);
-              
-              for(let j=i; j<str.length; j++){
-                
-                //console.log('test: '+j);
-                if(blacklist.indexOf(j)==-1){
-                //  console.log('test2: '+j);
-                  // console.log('test___: '+str[j]);
-                if(end===str[j]){
-                 // console.log('test3: '+j);
-                 // console.log('End: '+end+' num: '+j);
-                 if(j!==i+2){
-                  let addtolist=blacklist.push(i,j);
-                 }
-                  //let addtolist=blacklist3.push(i,j);
-                  //console.log('-----'+blacklist3+'------');
-                  continue forwar;
-                }
-                }
-              
-              }
-            }
-          }
-        }
-      }
-      }
-      }
-  if(str.length-blacklist.length==0){
-    res=true;
-  }else{
-    res=false;
+  var check=[],
+  checkStart,
+  checkEnd,
+  compare
+result=true;
+
+
+
+function search(bracket='', brackets=[], open=true) {
+let position=false; 
+let bracketStart=0;
+if(!open){
+  bracketStart=1;
+}
+ for(let s=0;s<brackets.length; s++){
+   
+     if(brackets[s][bracketStart]===bracket){
+       position=s;
+       break;
+     
+   }    
+ }
+return position;
+}
+
+
+
+for(let i=0; i<str.length; i++){
+checkStart=search(str[i], bracketsConfig, true);
+//console.log('4--'+checkStart);
+if(checkStart!==false){
+  check.push(checkStart);
+ // console.log(check);
+  continue;    
+}
+ checkEnd=search(str[i], bracketsConfig, false);
+ //console.log('3--'+checkEnd);
+if(checkEnd!==false){
+  compare=check.pop();
+ // console.log('2--'+check);
+  if(compare!==checkEnd){
+    result=false;
+    break;
   }
-  return res;
   
-  
-  
-  
-  
-  
+}
+
+}
+if (check.length !== 0) {
+result=false;
+if(check.length%2==0){
+  result=true;   
+}
+}
+return result;
+
 }
